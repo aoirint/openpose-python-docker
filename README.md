@@ -10,3 +10,4 @@
     - `ls /usr/bin | grep nvidia-container-runtime`
   - https://github.com/nvidia/nvidia-container-runtime#docker-engine-setup
 - `sudo docker-compose build`
+  - Wait over green tea... some >=500MB files will be downloaded and some builds will run...
