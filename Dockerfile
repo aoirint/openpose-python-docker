@@ -1,26 +1,44 @@
 FROM nvidia/cuda:10.1-cudnn7-devel
 
-RUN mkdir /code
-WORKDIR /code
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update && apt -y install \
   software-properties-common \
   wget \
   git \
   build-essential \
-  protobuf-compiler \
+  protobuf-compiler \ # cmake openpose
   libprotobuf-dev \
-  libhdf5-dev \
-  libatlas-base-dev
+  libhdf5-dev \ # make openpose
+  libatlas-base-dev \
+  libssl-dev \ # pyenv
+  libbz2-dev \
+  libreadline-dev \
+  libsqlite3-dev
 
 RUN apt update --fix-missing && apt -y --no-install-recommends install \
   libboost-all-dev
 
-# https://qiita.com/yagince/items/deba267f789604643bab
-ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update --fix-missing && apt -y install \
   libgoogle-glog-dev \
   libopencv-dev
+
+RUN git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+RUN echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc \
+    && echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc \
+    && bash -c 'echo -e "\
+if command -v pyenv 1>/dev/null 2>&1; then\n\
+  eval \"\$(pyenv init -)\"\n\
+fi" >> ~/.bashrc'
+
+ENV HOME /root
+ENV PYENV_ROOT $HOME/.pyenv
+ENV PATH $PYENV_ROOT/bin:$PATH
+
+RUN eval "$(pyenv init -)"
+RUN pyenv install 3.7.6
+RUN pyenv global 3.7.6
+
 
 WORKDIR /usr/local
 RUN wget https://github.com/Kitware/CMake/releases/download/v3.17.0-rc2/cmake-3.17.0-rc2-Linux-x86_64.sh
@@ -38,4 +56,6 @@ RUN cmake -DBUILD_PYTHON=true ..
 RUN make -j4
 RUN make install
 
+
+RUN mkdir /code
 WORKDIR /code
