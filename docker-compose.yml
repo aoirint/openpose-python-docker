@@ -2,7 +2,13 @@ version: '2.3'
 services:
   app:
     build: .
-    command: nvidia-smi
+    command: >
+      bash -c ' \
+        eval "$$(pyenv init -)" \
+        && python -V \
+        && which python \
+        && python -c "import sys; sys.path.append(\"/usr/local/python\"); from openpose import pyopenpose;" \
+      '
     runtime: nvidia
     environment:
       - NVIDIA_VISIBLE_DEVICES=all

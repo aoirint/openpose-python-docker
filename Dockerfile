@@ -7,11 +7,11 @@ RUN apt update && apt -y install \
   wget \
   git \
   build-essential \
-  protobuf-compiler \ # cmake openpose
+  protobuf-compiler \
   libprotobuf-dev \
-  libhdf5-dev \ # make openpose
+  libhdf5-dev \
   libatlas-base-dev \
-  libssl-dev \ # pyenv
+  libssl-dev \
   libbz2-dev \
   libreadline-dev \
   libsqlite3-dev
@@ -55,7 +55,11 @@ RUN cmake -DBUILD_PYTHON=true ..
 
 RUN make -j4
 RUN make install
+RUN ln -s /usr/local/python/openpose/pyopenpose.cpython-36m-x86_64-linux-gnu.so /root/.pyenv/versions/3.7.6/lib/python3.7/site-packages/pyopenpose
+RUN ln -s /usr/local/python/openpose/pyopenpose.cpython-36m-x86_64-linux-gnu.so /usr/local/python/openpose/pyopenpose
+RUN ln -s /usr/local/python/openpose/pyopenpose.cpython-36m-x86_64-linux-gnu.so /usr/local/python/pyopenpose
 
+RUN echo 'export LD_LIBRARY_PATH="/usr/local/python/openpose:$LD_LIBRARY_PATH"' >> ~/.bashrc
 
 RUN mkdir /code
 WORKDIR /code
