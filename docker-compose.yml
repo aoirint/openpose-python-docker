@@ -12,7 +12,5 @@ services:
     runtime: nvidia
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
-      - DISPLAY=$DISPLAY # FOR example script
     volumes:
       - ./app:/code
-      - /tmp/.X11-unix:/tmp/.X11-unix # FOR example script
