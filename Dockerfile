@@ -28,6 +28,7 @@ RUN chmod +x cmake-3.17.0-rc2-Linux-x86_64.sh
 RUN bash ./cmake-3.17.0-rc2-Linux-x86_64.sh --skip-license
 
 RUN git clone https://github.com/CMU-Perceptual-Computing-Lab/openpose.git /openpose
+WORKDIR /openpose
 RUN git checkout d78ae77fa660fdf75300a5ff1aebab0783052c7b
 
 RUN mkdir /openpose/build
