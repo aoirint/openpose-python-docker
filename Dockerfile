@@ -10,11 +10,7 @@ RUN apt update && apt -y install \
   protobuf-compiler \
   libprotobuf-dev \
   libhdf5-dev \
-  libatlas-base-dev \
-  libssl-dev \
-  libbz2-dev \
-  libreadline-dev \
-  libsqlite3-dev
+  libatlas-base-dev
 
 RUN apt update --fix-missing && apt -y --no-install-recommends install \
   libboost-all-dev
